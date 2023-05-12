@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+registerables,
 } from 'chart.js'
 
 import { Doughnut } from 'vue-chartjs'
@@ -55,17 +56,29 @@ export default {
                         display: false,
                     },
                     tooltip: {
+                        padding: 12,
+                        usePointStyle: true,
+                        backgroundColor: 'rgba(255,255,255,0.8)',
+                        titleColor: '#334155',
+                        titleFont: {size: 16},
+                        bodyFont: {size: 18},
+                        bodyColor: '#334155',
+                        borderWidth: 0,
+                        displayColors: true,
+                        caretSize: 0,
+                        cornerRadius: 8,
                         filter: function (tooltipItem) {
                             return tooltipItem.label !== 'Empty';
                         },
                         callbacks: {
-                            // label: (tooltipItem, data) => {
-                            //     const dataset = data.datasets[tooltipItem.datasetIndex];
-                            //     const total = dataset.data.reduce((sum, value) => sum + value, 0);
-                            //     const value = dataset.data[tooltipItem.index];
-                            //     const percent = Math.round(value / total * 100);
-                            //     return `${data.labels[tooltipItem.index]}: ${value} (${percent}%)`
-                            // }
+                            // title: (data) => {
+                            //     let tooltipItem = data[0];
+                            //     console.log(data);
+                            //     return tooltipItem.label + ', ' +  tooltipItem.parsed;
+                            // },
+                            labelPointStyle: () => {
+                                return {pointStyle: 'circle', radius:5, borderWidth:5, borderColor:'rgba(0,0,0)', hoverBorderWidth:0};
+                            }
                         }
                     }
                 },
