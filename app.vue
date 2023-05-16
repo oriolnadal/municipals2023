@@ -1,27 +1,32 @@
--Send form + proteccions (Comprovar que el nom és únic)
--Fer fastAPI amb els mètodes.
--Confetti
+TO DO:
+-Desplegar
 
-(maybe)
--Acabar dark mode?
-
-Endpoints:
--getEmptyVotes
--getVotes
--getParties
+MAYBE
+-Afegir la resta de coses de la porra: municipis i etc?
+-Acabar dark mode
+-Millorar Confetti
+-Taula amb tots els resultats filtrables i tal
 
 
 <template>
   <div class="">
+    <!-- <Particles
+      id="tsparticles"
+      :options="options"
+      :particlesInit="particlesInit"
+    /> -->
     <div class="container px-4 md:px-0 mx-auto pb-[100px] pt-10 text-lg text-slate-700">
       <h1 class="text-6xl inline-block font-extrabold bg-gradient-to-r w-100 from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% text-transparent bg-clip-text">Porra Municipals 2023 🗳️ 🎉</h1>
       <p class="mt-5">
-        Suuuuh, ja han arribat! Tornem a tenir comicis (menys en David xd) i per tant tornem a tenir... porra!
+        Suuuuh, ja han arribat! Tornem a tenir comicis (menys en David xd) i per tant tornem a tenir... <b>porra</b>!
         <br>
-        Aquest cop amb el format tonto de les eleccions, les menys estimades*: les municipals.
+        Tot i que cop siguin les eleccions menys estimades i avorrides*, però què hi farem. Qualsevol excusa és bona per fer una web i/o quedar.
         <br>
         <span class="text-xs">*Europees a part que lol</span>
       </p>
+
+      <h3 class="title-2 gradient mt-9">Convocatòria</h3>
+      <p class="mt-4">Abans de res, compteu també que farem nit electoral. En ppi a Sants on ja sabeu, però confirmem detalls per Telegram. Susceptible de canviar si plou o si ets. A les 19 i a les 23 tothom fora de casa que si no els veïns es rallen.</p>
 
       <!-- How it works -->
       <h3 class="title-2 gradient mt-9">Funcionament</h3>
@@ -35,7 +40,7 @@ Endpoints:
         <li class="py-2 flex">
           <Icon class="w-24 my-auto mr-4" size="1.75rem" name="💸"/>
           <div>
-            Bizum de 3€ a l'Oriol. Concepte:<i class="text-base font-medium"> Munis23 - [nom/pseudònim]</i>. Fins que no rebi el Bizum el vot no compta.
+            Bizum de 3€ a l'Oriol. Concepte:<i class="text-base font-medium"> Munis23 - [nom/pseudònim]</i>. Si no arriba a temps el vot s'esborra, que si no post resultats ningú pagarà.
           </div>
         </li>
         <li class="py-2 flex">
@@ -45,17 +50,20 @@ Endpoints:
           </div>
         </li>
         <li class="py-2 flex">
-          <Icon class="w-24 mb-auto mr-4" size="1.75rem" name="#️⃣"/>
+          <Icon class="w-24 my-auto mr-4" size="1.75rem" name="🏆"/>
           <div>
-            La fórmula per calcuar qui guanyarà torna a ser l'error quadràtic mig, aka MSE/MSD en anglès, o EQM en el nostre perseguit idioma. La fórmula és:
-            <img class="w-56 my-3" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7c16be29718bd02e3b2104b8e813943c6a6521fc"/>
-            On Y és el resultat de les eleccions i la Y amb barretet (sorry xd) la nostra aposta.
+            Guanya qui obtingui <b>MENYS</b> punts, amb el sistema que s'explica tot seguit. Qui en tingui menys es queda tot el pot. En cas d'emptat es divideixen els diners entre aquestes persones.
           </div>
         </li>
         <li class="py-2 flex">
-          <Icon class="w-24 my-auto mr-4" size="1.75rem" name="🏆"/>
+          <Icon class="w-24 mb-auto mr-4" size="1.75rem" name="💡"/>
           <div>
-            És a dir, qui tingui un EQM <b>menor</b> es queda tot el pot. En cas d'emptat es divideixen els diners entre aquestes persones.
+            Els punts surten de l'aproximació de regidors de l'ajuntament de Barcelona i de respondre correctament les preguntes extra.
+            Per l'ajuntament la fórmula torna a ser l'error quadràtic mig, aka MSE/MSD en anglès, o EQM en el nostre perseguit idioma. La fórmula és:
+            <img class="w-56 my-3" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7c16be29718bd02e3b2104b8e813943c6a6521fc"/>
+            On Y és el resultat de les eleccions i la Y amb barretet (sorry xd) la nostra aposta. Com menys punts doncs, millor!
+            <br>
+            A part, cada pregunta extra encertada <b>restarà</b> 2 punts.
           </div>
         </li>
         <li class="py-2 flex">
@@ -71,14 +79,13 @@ Endpoints:
       <!-- Form: Name -->
       <div class="mt-5">
         <label for="price" class="block font-medium leading-6 text-gray-900">Nom</label>
-        <!-- <span class="text-sm font-light">(públic)</span> -->
         <p class="text-xs text-slate-500 mt-2">
           Escriu el teu nom. Sortirà públic a la llista de vots. Si poses un pseudònim per gràcia. Ha de ser mateix que posis al concepte del Bizum. Si vols votar dos cops, número o etc.
-          <!-- *Per si no s'ha entès, aquí la idea és que escriguis el teu nom. Pots posar també un pseudònim o el que sigui, però vamos, jo crec que perd una mica la gràcia. -->
         </p>
         <div class="relative mt-2 rounded-lg">
-          <input type="text" name="price" id="price" class="block w-full md:w-64 rounded-lg py-1.5 pl-3 pr-20 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6" placeholder="Nom...">
+          <input v-model="name" type="text" name="price" id="price" class="block w-full md:w-64 rounded-lg py-1.5 pl-3 pr-20 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6" placeholder="Nom...">
         </div>
+        <p v-if="!nameUnique" class="mt-2 text-sm text-red-600">El nom ja existeix :/</p>
       </div>
       <!-- Form: Comments -->
       <div class="mt-5">
@@ -88,9 +95,8 @@ Endpoints:
         </p>
         <div class="flex mt-2 rounded-lg">
           <div class="relative">
-            <textarea v-model="comment" placeholder="Comentaris..." maxlength="250" cols="70" rows="4" class="resize-none rounded-lg py-1.5 pl-3 pr-3 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6">
-            </textarea>
-            <div class="absolute text-slate-500 text-sm bg-white p-1 rounded bottom-3 right-1">{{ comment.length }} / 250</div>
+            <textarea v-model="comments" placeholder="Comentaris..." maxlength="250" cols="70" rows="4" class="resize-none rounded-lg py-1.5 pl-3 pr-3 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6"></textarea>
+            <div class="absolute text-slate-500 text-sm bg-white p-1 rounded bottom-3 right-1">{{ comments.length }} / 250</div>
           </div>
         </div>
       </div>
@@ -141,24 +147,27 @@ Endpoints:
             RESOLDRE LA PORRA 🎉
           </button>
         </div>
-        <button v-else :disabled="leftSeats !== 0" class="mx-auto py-2 px-4 w-48 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-emerald-600 hover:shadow duration-300 transition-all">
+        <button v-else :disabled="leftSeats !== 0 || !nameUnique || !correctNameLength" @click="sendForm" :class="sending?['scale-110']:''" class="mx-auto py-2 px-4 w-48 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-emerald-600 hover:shadow duration-300 transition-all">
           Votar
         </button>
       </div>
 
       <!-- Registered votes (gallery) -->
       <div class="mt-9 title-2 gradient">Gent que ja ha votat</div>
-      <p class="mt-2">Tot i que potser no han pagat i en aquest cas no compten...</p>
+      <p class="mt-2">Tot i que potser no han pagat i en aquest cas no compten... En tot cas, no surten els vots de cadascú per motius crec que prou clars. Dissabte sí que sortiran.</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mt-7">
         <transition-group name="fade">
-          <div v-for="(vote, index) in votes" :key="vote.id" :class="vote.winner && winnerComputed? ['bg-amber-300','scale-105','winner-shake']: ['bg-slate-100']" class="group p-3 shadow-md rounded-lg hover:scale-105 hover:-rotate-3 hover:shadow-lg transition-all duration-300 ease-in-out">
-            <div class="flex">
+          <div v-for="(vote, index) in votes" :key="vote.id" :class="vote.winner && winnerComputed? ['bg-amber-300','scale-105','winner-shake']: ['bg-slate-100']" class="group flex- flex-col p-3 shadow-md rounded-lg hover:scale-105 hover:-rotate-3 hover:shadow-lg transition-all duration-300 ease-in-out">
+            <div class="flex grow">
               <img class="flex shadow-sm rounded-full w-16 h-16 group-hover:rotate-6 group-hover:scale-110 group-hover:shadow-md transition-all duration-300 ease-in-out" :src="'https://api.dicebear.com/6.x/notionists-neutral/svg?seed='+vote.name" alt="Rounded avatar"/>
-              <div class="flex flex-col ml-3 overflow-hidden">
-                <div class="mt-1 text-lg font-bold flex align-middle">
+              <div class="flex flex-col grow ml-3 overflow-hidden">
+                <div class="flex mt-1 text-lg font-bold align-baseline">
                   <div class="truncate">{{vote.name}}</div>
-                    <div v-if="resultsMode && vote.points !== undefined && winnerComputed" class="flex-shrink-0 ml-2 text-white py-1 px-3 bg-sky-500 text-sm shadow rounded-full transition-all duration-200 ease-in-out">{{vote.points}} punts</div>
-                    <div v-if="vote.winner && winnerComputed" class="absolute -top-4 -right-3 text-7xl rotate-6 transition-all duration-200 ease-in-out winner-shake">🏆</div>
+                  <div v-if="!winnerComputed" class="text-sm font-normal rounded-full bg-slate-300 text-slate-700 px-2 py-0.5 my-auto ml-auto">
+                    {{new Date(vote.created_at).toLocaleString("ca-ES", {day: "numeric", month: "long"})}}
+                  </div>
+                  <div v-if="resultsMode && vote.points !== undefined && winnerComputed" class="flex-shrink-0 ml-2 text-white py-1 px-3 bg-sky-500 text-sm shadow rounded-full transition-all duration-200 ease-in-out">{{vote.points}} punts</div>
+                  <div v-if="vote.winner && winnerComputed" class="absolute -top-4 -right-3 text-7xl rotate-6 transition-all duration-200 ease-in-out winner-shake">🏆</div>
                 </div>
                 <div class="mt-2 wrap text-sm">{{vote.comments}}</div>
               </div>
@@ -185,15 +194,13 @@ Endpoints:
 </template>
 
 <script>
-
+  import { loadFull } from 'tsparticles';
   import NumericInput from '/components/NumericInput.vue';
   import parliamentChart from '/components/parliamentChart.vue';
-  import ConfettiExplosion from "vue-confetti-explosion";
   export default {
 
     components: {
       NumericInput,
-      ConfettiExplosion
     },
     data() {
       return {
@@ -201,8 +208,54 @@ Endpoints:
         parties: [],
         votes: [],
         computedClasses:[],
-        comment: '',
+        name:'',
+        comments: '',
         winnerComputed: false,
+        options: {
+          background: {
+            color: "#fff", // this sets a background color for the canvas
+          },
+          fullScreen: {
+            enable: true, // enabling this will make the canvas fill the entire screen, it's enabled by default
+            zIndex: -1, // this is the z-index value used when the fullScreen is enabled, it's 0 by default
+          },
+          interactivity: {
+            events: {
+              onClick: {
+                enable: true, // enables the click event, it's disabled by default
+                mode: "push", // adds the particles on click
+              },
+              onHover: {
+                enable: true, // enables the mouse hover event, it's disabled by default
+                mode: "repulse", // repulse the particles on mouse hover
+              },
+            },
+            modes: {
+              push: {
+                quantity: 10, // number of particles to add on click
+              },
+              repulse: {
+                distance: 300, // distance of the particles from the cursor
+              },
+            },
+          },
+          particles: {
+            links: {
+              distance: 200, // maximum distance for linking the particles
+              enable: true, // enabling this will make the particles linked together
+            },
+            move: {
+              enable: true, // enabling this will make particles move in the canvas
+              speed: { min: 1, max: 5 }, // using a range in speed value will make particles move in a random speed between min/max values, each particle has its own value, it won't change over time by default
+            },
+            opacity: {
+              value: { min: 0.3, max: 0.7 }, // using a different opacity, to have some semitransparent effects
+            },
+            size: {
+              value: { min: 1, max: 3 }, // let's randomize the particles size a bit
+            },
+          },
+        }
       }
     },
     computed: {
@@ -215,29 +268,48 @@ Endpoints:
       resultsMode() {
         // return true;
         return new Date() > new Date(2023, 4, 28, 9);
-      } 
+      },
+      nameUnique() {
+        return !this.votes.map(v=>v.name).includes(this.name);
+      },
+      correctNameLength() {
+        return this.name.length > 2 && this.name.length < 50;
+      }
     },
 
     methods: {
 
       async fetchData() {
-        const supabase = useSupabaseClient();
-        let {data: partiesInit, error} = await supabase.from('parties').select('*');
-        partiesInit?.forEach((party)=>{
-          party.seats = 0;
-        });
-        partiesInit.sort((a,b) => a.id - b.id);
-        this.parties = partiesInit;
 
-        //Votes
-        let { data: votes, error2 } = await supabase.from('votes').select('*');
+        const parties = await $fetch('/api/getParties');
+        this.parties = parties;
+
+        const votes = await $fetch('/api/getVotes');
         this.votes = votes;
       },
 
       sendForm() {
-        if(this.leftSeats === 0) {
-
+        if(this.leftSeats === 0 && this.nameUnique && this.correctNameLength) {
+          console.log(this.parties);
+          const vote = {'name':this.name, 'comments': this.comments};
+          this.parties.forEach((p) => {
+           vote[p.short_name] = p.seats;
+          });
+          console.log("VOTE",vote);
+          $fetch('/api/vote', { method: 'post', body: vote })
+          .then(response => {
+            console.log(response);
+            if(response.code) {
+              console.log("error");
+            }else {
+              this.votes.push(response[0]);
+            }
+          })
+          .catch(error=>{
+            console.log(error);
+          })
         }
+
       },
 
       computeWinner() {
@@ -261,6 +333,7 @@ Endpoints:
         //TO DO ADD DELAY
         setTimeout(() => {
           this.winnerComputed = true;
+          this.$confetti.start();
         }, 2000);
 
       },
@@ -304,14 +377,25 @@ Endpoints:
           return acc + error * error;
         }, 0);
         return squaredError / vector1.length;
-      }
+      },
+
+
+      particlesInit: async (engine) => {
+        console.log("holaa");
+        await loadFull(engine)
+      },
 
     },
     async created() {
-      console.log("Hola hackers! xd He fet la web amb Nuxt3 (sense TS), maquetat amb Tailwind i dades a supabase. Allotjat a Vercel. Ja podeu començar a objectar, però a cada conovocatòria diferent aniré canviant de stack per practica hehe");
+      console.log("Hola hackers! xd He fet la web amb Nuxt3 (sense TS), maquetat amb Tailwind i amb Supabase per les dades. Allotjat a Vercel. Ja podeu començar a objectar, però a cada conovocatòria diferent aniré canviant de stack per practicar hehe Hi ha errors de seguretat detectats ja, us aviso. Com que no faig check de dades al servidor perquè em feia pal. Vull dir, que si voteu via APi es menja algunes coses que no toquen. Altres no... Però nse xd");
       await this.fetchData();
     },
     mounted() {
+      document.addEventListener("keyup", (e) => {
+        if (e.key === "s") {
+          this.$confetti.stop();
+        }
+      });
     }
   }
 </script>
@@ -340,9 +424,9 @@ Endpoints:
   transform: scaleY(0.01) translate(30px, 0);
 }
 
-/* .fade-leave-active {
+.fade-leave-active {
   position: absolute;
-} */
+}
 
 /* Animation */
 .winner-bounce {
