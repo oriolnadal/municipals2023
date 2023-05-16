@@ -1,5 +1,6 @@
 TO DO:
 -Desplegar
+-Feedback al sending
 
 MAYBE
 -Afegir la resta de coses de la porra: municipis i etc?
@@ -110,7 +111,7 @@ MAYBE
               <div class="text-sm font-light text-slate-500 truncate">{{party.candidate}}</div>
             </div>
             <div class="flex rounded-lg mt-3 shadow">
-              <NumericInput :value="party.seats" @input="party.seats = $event" @incr="party.seats = $event" :max="parliamentSeats" :leftSeats="leftSeats" class="mx-auto my-auto"/>
+              <numericInput :value="party.seats" @input="party.seats = $event" @incr="party.seats = $event" :max="parliamentSeats" :leftSeats="leftSeats" class="mx-auto my-auto"/>
             </div>
           </div>
         </div>
@@ -147,7 +148,7 @@ MAYBE
             RESOLDRE LA PORRA 🎉
           </button>
         </div>
-        <button v-else :disabled="leftSeats !== 0 || !nameUnique || !correctNameLength" @click="sendForm" :class="sending?['scale-110']:''" class="mx-auto py-2 px-4 w-48 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-emerald-600 hover:shadow duration-300 transition-all">
+        <button v-else :disabled="leftSeats !== 0 || !nameUnique || !correctNameLength" @click="sendForm" class="mx-auto py-2 px-4 w-48 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-emerald-600 hover:shadow duration-300 transition-all">
           Votar
         </button>
       </div>
@@ -195,12 +196,13 @@ MAYBE
 
 <script>
   import { loadFull } from 'tsparticles';
-  import NumericInput from '/components/NumericInput.vue';
+  import numericInput from '/components/numericInput.vue';
   import parliamentChart from '/components/parliamentChart.vue';
   export default {
 
     components: {
-      NumericInput,
+      numericInput,
+      parliamentChart
     },
     data() {
       return {
