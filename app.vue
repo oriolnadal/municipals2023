@@ -1,8 +1,11 @@
 TO DO:
--Desplegar
 -Feedback al sending
+-Arreglar cors
+-Add responsiveness
 
-MAYBE
+MAYBE / Millores
+-Separar per components
+-Aillar bé el numericInput perquè funcioni genèric
 -Afegir la resta de coses de la porra: municipis i etc?
 -Acabar dark mode
 -Millorar Confetti
@@ -27,7 +30,12 @@ MAYBE
       </p>
 
       <h3 class="title-2 gradient mt-9">Convocatòria</h3>
-      <p class="mt-4">Abans de res, compteu també que farem nit electoral. En ppi a Sants on ja sabeu, però confirmem detalls per Telegram. Susceptible de canviar si plou o si ets. A les 19 i a les 23 tothom fora de casa que si no els veïns es rallen.</p>
+      <p class="mt-4">
+        Abans de res, compteu també que farem nit electoral.
+        En ppi a Sants on ja sabeu, però confirmem detalls per Telegram.
+        Susceptible de canviar o anul·lar-se si plou o si passen coses.
+        Inici a les 19h i a les 23h tothom fora de casa que si no els veïns...hehe.
+      </p>
 
       <!-- How it works -->
       <h3 class="title-2 gradient mt-9">Funcionament</h3>
@@ -62,7 +70,7 @@ MAYBE
             Els punts surten de l'aproximació de regidors de l'ajuntament de Barcelona i de respondre correctament les preguntes extra.
             Per l'ajuntament la fórmula torna a ser l'error quadràtic mig, aka MSE/MSD en anglès, o EQM en el nostre perseguit idioma. La fórmula és:
             <img class="w-56 my-3" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7c16be29718bd02e3b2104b8e813943c6a6521fc"/>
-            On Y és el resultat de les eleccions i la Y amb barretet (sorry xd) la nostra aposta. Com menys punts doncs, millor!
+            On Y és el resultat de les eleccions i la Y amb barretet (sorry xd) la nostra aposta. Com menys punts, millor!
             <br>
             A part, cada pregunta extra encertada <b>restarà</b> 2 punts.
           </div>
@@ -76,7 +84,7 @@ MAYBE
       </ul>
 
       <!-- Votes -->
-      <div class="title-2 mt-10 gradient">Vota!</div>
+      <h3 class="title-2 mt-10 gradient">Vota!</h3>
       <!-- Form: Name -->
       <div class="mt-5">
         <label for="price" class="block font-medium leading-6 text-gray-900">Nom</label>
@@ -154,7 +162,7 @@ MAYBE
       </div>
 
       <!-- Registered votes (gallery) -->
-      <div class="mt-9 title-2 gradient">Gent que ja ha votat</div>
+      <h3 class="mt-9 title-2 gradient">Gent que ja ha votat</h3>
       <p class="mt-2">Tot i que potser no han pagat i en aquest cas no compten... En tot cas, no surten els vots de cadascú per motius crec que prou clars. Dissabte sí que sortiran.</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mt-7">
         <transition-group name="fade">

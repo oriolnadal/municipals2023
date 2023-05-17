@@ -11,8 +11,8 @@ export default defineNuxtConfig({
     { src: '~/plugins/vue-confetti.js', mode: 'client'}
   ],
   modules: ['@nuxtjs/supabase', '@nuxtjs/tailwindcss', 'nuxt-icon'],
-  routeRules:  {
-    '/api/**': { cors: true },
-  }
+  // routeRules:  {
+  //   '/api/**': { cors: true },
+  // }
 
 })
