@@ -1,10 +1,10 @@
 TO DO:
--Feedback al sending
 -Arreglar cors
--Add responsiveness
+-Favicon
 
 MAYBE / Millores
 -Separar per components
+-Millorar responsiveness
 -Aillar bé el numericInput perquè funcioni genèric
 -Afegir la resta de coses de la porra: municipis i etc?
 -Acabar dark mode
@@ -67,12 +67,15 @@ MAYBE / Millores
         <li class="py-2 flex">
           <Icon class="w-24 mb-auto mr-4" size="1.75rem" name="💡"/>
           <div>
-            Els punts surten de l'aproximació de regidors de l'ajuntament de Barcelona i de respondre correctament les preguntes extra.
-            Per l'ajuntament la fórmula torna a ser l'error quadràtic mig, aka MSE/MSD en anglès, o EQM en el nostre perseguit idioma. La fórmula és:
+            Els punts surten de l'aproximació de regidors de l'ajuntament de Barcelona.
+            La fórmula torna a ser l'error quadràtic mig, aka MSE/MSD en anglès, o EQM en el nostre perseguit idioma. La fórmula és:
             <img class="w-56 my-3" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7c16be29718bd02e3b2104b8e813943c6a6521fc"/>
             On Y és el resultat de les eleccions i la Y amb barretet (sorry xd) la nostra aposta. Com menys punts, millor!
             <br>
-            A part, cada pregunta extra encertada <b>restarà</b> 2 punts.
+            <div class="text-sm mt-4">
+              *Volia fer el que havíem dit d'afegir altres preguntes de municipis nsequè, guanyadors de nsequantos, però hi ha coalicions rares a tot arreu que dificulten la tasca. Així que ajuntament bcn i prou sorry :/
+              Podeu posar les vostres prediccions extres als comentaris...
+            </div>
           </div>
         </li>
         <li class="py-2 flex">
@@ -89,7 +92,7 @@ MAYBE / Millores
       <div class="mt-5">
         <label for="price" class="block font-medium leading-6 text-gray-900">Nom</label>
         <p class="text-xs text-slate-500 mt-2">
-          Escriu el teu nom. Sortirà públic a la llista de vots. Si poses un pseudònim per gràcia. Ha de ser mateix que posis al concepte del Bizum. Si vols votar dos cops, número o etc.
+          Escriu el teu nom. Sortirà públic a la llista de vots. Si poses un pseudònim perd gràcia. Emn tot cas ha de ser el mateix nom que posis al concepte del Bizum. Si vols votar dos cops, posa un número o etc.
         </p>
         <div class="relative mt-2 rounded-lg">
           <input v-model="name" type="text" name="price" id="price" class="block w-full md:w-64 rounded-lg py-1.5 pl-3 pr-20 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6" placeholder="Nom...">
@@ -104,7 +107,7 @@ MAYBE / Millores
         </p>
         <div class="flex mt-2 rounded-lg">
           <div class="relative">
-            <textarea v-model="comments" placeholder="Comentaris..." maxlength="250" cols="70" rows="4" class="resize-none rounded-lg py-1.5 pl-3 pr-3 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6"></textarea>
+            <textarea v-model="comments" placeholder="Comentaris..." maxlength="250" cols="70" rows="4" style="max-width:90vw" class="resize-none rounded-lg py-1.5 pl-3 pr-3 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6"></textarea>
             <div class="absolute text-slate-500 text-sm bg-white p-1 rounded bottom-3 right-1">{{ comments.length }} / 250</div>
           </div>
         </div>
@@ -114,7 +117,7 @@ MAYBE / Millores
         <!-- Parties -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           <div v-for="party in parties" :key="party.id" class="rounded-lg p-3 shadow shadow-slate-300" :style="{backgroundColor: party.color}">
-            <div @click="party.seats = party.seats + leftSeats" class="bg-white rounded-md p-2 cursor-default shadow-md hover:shadow-sm hover:scale-105 transition-all duration-300">
+            <div @click="party.seats = party.seats + leftSeats" class="bg-white rounded-md p-2 cursor-default shadow-md hover:bg-opacity-80 hover:shadow-sm hover:scale-105 transition-all duration-300">
               <div class="font-extrabold text-slate-700 truncate">{{party.name}} {{party.emoji}}</div>
               <div class="text-sm font-light text-slate-500 truncate">{{party.candidate}}</div>
             </div>
@@ -152,18 +155,47 @@ MAYBE / Millores
           <div>
             Ja no es pot votar sorry. Però aquí tens un botó per si vols...
           </div>
-          <button @click="computeWinner" :disabled="leftSeats !== 0" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-emerald-600 hover:shadow duration-300 transition-all">
+          <button @click="computeWinner" :disabled="leftSeats !== 0" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
             RESOLDRE LA PORRA 🎉
           </button>
         </div>
-        <button v-else :disabled="leftSeats !== 0 || !nameUnique || !correctNameLength" @click="sendForm" class="mx-auto py-2 px-4 w-48 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-emerald-600 hover:shadow duration-300 transition-all">
-          Votar
-        </button>
+        <div v-else class="mx-auto text-center h-10">
+          <transition
+            mode="out-in"
+            enter-active-class="duration-300 ease-out -translate-y-full"
+            enter-to-class="translate-y-0"
+            leave-active-class="duration-300 ease-in"
+            leave-class="translate-y-0"
+            leave-to-class="translate-y-full"
+          >
+            <button v-if="!sendingVote" :disabled="leftSeats !== 0 || !nameUnique || !correctNameLength" @click="sendForm" class="mx-auto py-2 px-4 w-48 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
+              Votar
+            </button>
+            <div v-else class="flex align-middle font-semibold ">
+              <transition
+                mode="out-in"
+                enter-active-class="duration-300 ease-out -translate-x-full"
+                enter-to-class="translate-x-0"
+                leave-active-class="duration-300 ease-in"
+                leave-class="translate-x-0"
+                leave-to-class="translate-x-full"
+              >
+                <div v-if="voteSucceed" class="text-white bg-lime-600 px-5 py-2 rounded-full">
+                  Rebut, visca!
+                </div>
+                <div v-else class="flex text-sky-600">
+                  <div class="flex text-5xl mr-3 "><Icon name="svg-spinners:pulse-3" class="my-auto"></Icon></div>
+                  <div class="my-auto">Enviant</div>
+                </div>
+              </transition>
+            </div>
+          </transition>
+        </div>
       </div>
 
       <!-- Registered votes (gallery) -->
-      <h3 class="mt-9 title-2 gradient">Gent que ja ha votat</h3>
-      <p class="mt-2">Tot i que potser no han pagat i en aquest cas no compten... En tot cas, no surten els vots de cadascú per motius crec que prou clars. Dissabte sí que sortiran.</p>
+      <h3 class="mt-9 title-2 gradient">Recull de vots</h3>
+      <p class="mt-2">No surten els regidors triats per cadascú per motius crec que prou clars. Dissabte sí que els podrem veure.</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mt-7">
         <transition-group name="fade">
           <div v-for="(vote, index) in votes" :key="vote.id" :class="vote.winner && winnerComputed? ['bg-amber-300','scale-105','winner-shake']: ['bg-slate-100']" class="group flex- flex-col p-3 shadow-md rounded-lg hover:scale-105 hover:-rotate-3 hover:shadow-lg transition-all duration-300 ease-in-out">
@@ -198,12 +230,15 @@ MAYBE / Millores
           </div>
         </transition-group>
       </div>
+      <div v-if="votes.length === 0" class="bg-slate-100 text-slate-500 font-semibold flex grow p-4 rounded-lg">
+        Encara no ha votat ningú 🫠
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import { loadFull } from 'tsparticles';
+  // import { loadFull } from 'tsparticles';
   import numericInput from '/components/numericInput.vue';
   import parliamentChart from '/components/parliamentChart.vue';
   export default {
@@ -220,6 +255,8 @@ MAYBE / Millores
         computedClasses:[],
         name:'',
         comments: '',
+        sendingVote: false,
+        voteSucceed: false,
         winnerComputed: false,
         options: {
           background: {
@@ -300,19 +337,28 @@ MAYBE / Millores
 
       sendForm() {
         if(this.leftSeats === 0 && this.nameUnique && this.correctNameLength) {
-          console.log(this.parties);
+          this.sendingVote = true;
           const vote = {'name':this.name, 'comments': this.comments};
           this.parties.forEach((p) => {
            vote[p.short_name] = p.seats;
           });
-          console.log("VOTE",vote);
           $fetch('/api/vote', { method: 'post', body: vote })
           .then(response => {
-            console.log(response);
             if(response.code) {
-              console.log("error");
+              console.log(response);
             }else {
-              this.votes.push(response[0]);
+              setTimeout(() => {
+                this.voteSucceed = true;
+                setTimeout(()=> {
+                  this.sendingVote = false;
+                  this.voteSucceed = false;
+                  this.name = '';
+                  this.comments = '';
+                  this.clearAllSeats();
+                  this.votes.unshift(response[0]);
+                }, 2500);
+              }, 2500);
+
             }
           })
           .catch(error=>{
@@ -390,14 +436,13 @@ MAYBE / Millores
       },
 
 
-      particlesInit: async (engine) => {
-        console.log("holaa");
-        await loadFull(engine)
-      },
+      // particlesInit: async (engine) => {
+      //   await loadFull(engine)
+      // },
 
     },
     async created() {
-      console.log("Hola hackers! xd He fet la web amb Nuxt3 (sense TS), maquetat amb Tailwind i amb Supabase per les dades. Allotjat a Vercel. Ja podeu començar a objectar, però a cada conovocatòria diferent aniré canviant de stack per practicar hehe Hi ha errors de seguretat detectats ja, us aviso. Com que no faig check de dades al servidor perquè em feia pal. Vull dir, que si voteu via APi es menja algunes coses que no toquen. Altres no... Però nse xd");
+      console.log("Hola hackers! xd He fet la web amb Nuxt3 (sense TS), maquetat amb Tailwind i amb Supabase per les dades. Allotjat a Vercel. Ja podeu començar a objectar, però a cada conovocatòria diferent aniré canviant de stack per practicar hehe. Hi ha errors de seguretat detectats ja, us aviso. Com que no faig check de dades al servidor perquè em feia pal. Vull dir, que si voteu via APi es menja algunes coses que no toquen. Altres no... Però nse xd");
       await this.fetchData();
     },
     mounted() {
