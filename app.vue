@@ -11,6 +11,12 @@ MAYBE / Millores
 -Millorar Confetti
 -Taula amb tots els resultats filtrables i tal
 
+FUTURE
+-Drag quesitos del Chart per ajustar regidors
+-Mapa Catalunya per triar ajuntaments
+-Dades d'scraping automàtic
+-Comptar a temps real
+
 
 <template>
   <div class="">
@@ -233,12 +239,27 @@ MAYBE / Millores
       <div v-if="votes.length === 0" class="bg-slate-100 text-slate-500 font-semibold flex grow p-4 rounded-lg">
         Encara no ha votat ningú 🫠
       </div>
+
+      <!-- Votes Table -->
+      <h5 class="mt-20 font-bold text-slate-500 text-lg">Taula resum</h5>
+      <div class="text-base mt-5 shadow">
+        <DataTable :value="votes" tableStyle="min-width: 50rem" tableClass="">
+          <Column field="name" header="">
+            <template #body="slotProps">
+              <div class="flex align-middle">
+                <img class="flex my-auto border rounded-full w-16 h-16 group-hover:rotate-6 group-hover:scale-110 group-hover:shadow-md transition-all duration-300 ease-in-out" :src="'https://api.dicebear.com/6.x/notionists-neutral/svg?seed='+slotProps.data.name" alt="Rounded avatar"/>
+                <div class="ml-5 font-semibold text-base my-auto">{{ slotProps.data.name }}</div>
+              </div>
+            </template>
+          </Column>
+          <Column v-for="party of parties" :key="party.short_name" :field="party.short_name" :header="party.name"></Column>
+        </DataTable>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  // import { loadFull } from 'tsparticles';
   import numericInput from '/components/numericInput.vue';
   import parliamentChart from '/components/parliamentChart.vue';
   export default {
@@ -258,51 +279,6 @@ MAYBE / Millores
         sendingVote: false,
         voteSucceed: false,
         winnerComputed: false,
-        options: {
-          background: {
-            color: "#fff", // this sets a background color for the canvas
-          },
-          fullScreen: {
-            enable: true, // enabling this will make the canvas fill the entire screen, it's enabled by default
-            zIndex: -1, // this is the z-index value used when the fullScreen is enabled, it's 0 by default
-          },
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true, // enables the click event, it's disabled by default
-                mode: "push", // adds the particles on click
-              },
-              onHover: {
-                enable: true, // enables the mouse hover event, it's disabled by default
-                mode: "repulse", // repulse the particles on mouse hover
-              },
-            },
-            modes: {
-              push: {
-                quantity: 10, // number of particles to add on click
-              },
-              repulse: {
-                distance: 300, // distance of the particles from the cursor
-              },
-            },
-          },
-          particles: {
-            links: {
-              distance: 200, // maximum distance for linking the particles
-              enable: true, // enabling this will make the particles linked together
-            },
-            move: {
-              enable: true, // enabling this will make particles move in the canvas
-              speed: { min: 1, max: 5 }, // using a range in speed value will make particles move in a random speed between min/max values, each particle has its own value, it won't change over time by default
-            },
-            opacity: {
-              value: { min: 0.3, max: 0.7 }, // using a different opacity, to have some semitransparent effects
-            },
-            size: {
-              value: { min: 1, max: 3 }, // let's randomize the particles size a bit
-            },
-          },
-        }
       }
     },
     computed: {
@@ -434,11 +410,6 @@ MAYBE / Millores
         }, 0);
         return squaredError / vector1.length;
       },
-
-
-      // particlesInit: async (engine) => {
-      //   await loadFull(engine)
-      // },
 
     },
     async created() {

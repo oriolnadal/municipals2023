@@ -15,5 +15,12 @@ export default defineNuxtConfig({
     { src: '~/plugins/vue-confetti.js', mode: 'client'}
   ],
   modules: ['@nuxtjs/supabase', '@nuxtjs/tailwindcss', 'nuxt-icon'],
+  css: [
+    "primevue/resources/themes/lara-light-blue/theme.css",
+    "primevue/resources/primevue.css"
+  ],
+  build: {
+    transpile: ["primevue"]
+  }
 
 })
