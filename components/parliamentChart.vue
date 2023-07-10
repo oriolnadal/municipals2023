@@ -37,7 +37,7 @@ export default {
             let parties = this.parties
             if (this.totalSeatsparties !== this.totalSeats) {
                 const emptySeats = this.totalSeats - this.totalSeatsparties
-                parties = [...this.parties, { name: 'Empty', seats: emptySeats, color:'#eee'}]
+                parties = [...this.parties, { name: 'Empty', seats: emptySeats, color:'#fff'}]
             }
             return {
                 labels: parties.map(party => party.name),

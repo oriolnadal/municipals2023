@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      title: 'Porra municipals 2023',
+      title: 'Porra eleccions generals 23J',
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       link: [

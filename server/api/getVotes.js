@@ -2,7 +2,7 @@ import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const client = serverSupabaseClient(event)
-  const { data, error } = await client.from('votes').select('*').order('created_at', {ascending: false});
+  const { data, error } = await client.from('votes_23j').select('*').order('created_at', {ascending: false});
   if (error) {
     throw createError({ statusMessage: error.message })
   }
