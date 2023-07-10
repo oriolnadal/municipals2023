@@ -1,26 +1,19 @@
 TO DO:
 -Arreglar cors
--Favicon
 
 MAYBE / Millores
 -Separar per components
--Millorar responsiveness
 -Aillar bé el numericInput perquè funcioni genèric
--Afegir la resta de coses de la porra: municipis i etc?
 -Acabar dark mode
 -Millorar Confetti
 -Taula amb tots els resultats filtrables i tal
 -Si deixem click apretat sobré un botó que vagin pujant els clicks
 
-23j
--Responsive
-
-
 
 <template>
   <div class="">
     <div class="container px-4 md:px-0 mx-auto pb-[100px] pt-10 text-lg text-slate-700">
-      <h1 class="text-6xl inline-block font-extrabold bg-gradient-to-r w-100 from-red-500 from-0% via-fuchsia-500 via-30% to-blue-500 to-100% text-transparent bg-clip-text">Porra eleccions generals 23J 🗳️ 🎉</h1>
+      <h1 class="md:h-16 text-6xl inline-block font-extrabold bg-gradient-to-r w-100 from-red-500 from-0% via-fuchsia-500 via-30% to-blue-500 to-100% text-transparent bg-clip-text">Porra eleccions generals 23J 🗳️ 🎉</h1>
       <p class="mt-5">
         <span class="text-lg font-bold">
           Ja hi tornem a ser, una altra festa de la democràcia!
@@ -114,10 +107,10 @@ MAYBE / Millores
         </div>
       </div>
 
-      <div class="h-[450px] flex flex-col-reverse md:flex-row md mt-9 gap-4">
+      <div class="md:h-[450px] flex flex-col-reverse md:flex-row md mt-9 gap-4">
 
         <!-- Parties -->
-        <div class="flex-1 shrink flex-nowrap overflow-y-auto w-1/2 p-4 bg-slate-100 rounded-lg">
+        <div class="flex-1 shrink flex-nowrap overflow-y-auto md:w-1/2 p-4 bg-slate-100 rounded-lg">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             <div v-for="party in parties" :key="party.id" class="rounded-lg p-3 shadow shadow-slate-300" :style="{backgroundColor: party.color}">
               <div @click="party.seats = party.seats + leftSeats" class="bg-white rounded-md p-2 cursor-default shadow-md hover:bg-opacity-80 hover:shadow-sm hover:scale-105 transition-all duration-300">
@@ -132,12 +125,12 @@ MAYBE / Millores
         </div>
 
         <!-- Chart zone-->
-        <div class="flex flex-col w-1/2">
+        <div class="flex flex-col w-100 md:w-1/2">
           <!-- Toolbar -->
-          <div class="flex flex-auto mb-3">
-            <button @click="setCurrentSeats" class="text-base bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:rainbow" class="mr-2"/>Resultats 2019</button>
-            <button @click="shuffleSeats" class="text-base bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:shuffle" class="mr-2"/>Aleatori</button>
-            <button @click="clearAllSeats" class="text-base bg-slate-100 rounded-lg px-3 py-1 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:trash" class="mr-2"/>Neteja</button>
+          <div class="flex flex-row md:flex-auto mb-3">
+            <button @click="setCurrentSeats" class="md:grow text-base bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:rainbow" class="mr-2"/>Resultats 2019</button>
+            <button @click="shuffleSeats" class="md:grow text-base bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:shuffle" class="mr-2"/>Aleatori</button>
+            <button @click="clearAllSeats" class="md:grow text-base bg-slate-100 rounded-lg px-3 py-1 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:trash" class="mr-2"/>Neteja</button>
           </div>
           <!-- Chart -->
           <div class="flex flex-grow h-100 rounded-lg p-1 bg-slate-100">
@@ -223,13 +216,15 @@ MAYBE / Millores
             </div>
             <div v-if="resultsMode" class="flex mt-3">
               <div class="mt-3 mb-5 grid grid-cols-3 gap-2 text-base">
-                <div v-for="party in parties" :key="party.id" :style="{backgroundColor: party.color}" class="flex bg-slate-50 shadow-sm rounded-lg p-2">
-                  <div class="flex grow overflow-hidden">
-                    <div class="py-1 px-2 border-2 border-white bg-opacity-75 shrink-0 mr-1 text-center font-bold shadow bg-white rounded-md">
-                      {{vote[party.short_name]}}
-                    </div>
-                    <div class="py-1 px-2 grow truncate border-2 border-white bg-opacity-75 bg-white rounded-md">
-                      {{party.name}}
+                <div v-for="party in parties.filter(party => vote[party.short_name] > 0)" :key="party.id">
+                  <div :key="party.id" :style="{backgroundColor: party.color}" class="flex bg-slate-50 shadow-sm rounded-lg p-2">
+                    <div class="flex grow overflow-hidden">
+                      <div class="py-1 px-2 border-2 border-white bg-opacity-75 shrink-0 mr-1 text-center font-bold shadow bg-white rounded-md">
+                        {{vote[party.short_name]}}
+                      </div>
+                      <div class="py-1 px-2 grow text-sm my-auto truncate border-2 border-white bg-opacity-75 bg-white rounded-md">
+                        {{party.name}}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -242,10 +237,12 @@ MAYBE / Millores
         Encara no ha votat ningú 🫠
       </div>
     </div>
-    <div class="flex content-center justify-center h-9 text-center text-slate-500 bg-slate-200">
-      <div class="my-auto text-sm">
-        Fet amb il·lusió i qui sap si en horari laboral per <a class="bg-slate-300 rounded-lg py-1 px-2" href="https://twitter.com/OriolNadal_">aquesta persona</a>
-      </div>
+    <div class="text-sm flex flex-col py-1 md:flex-row content-center justify-center text-center text-slate-500 bg-slate-200">
+        <div class="my-auto">
+          Fet amb il·lusió i qui sap si en horari laboral per
+        </div>
+        <a class="flex self-center bg-slate-300 rounded-lg m-1 px-2" href="https://twitter.com/OriolNadal_">aquesta persona</a>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -265,7 +262,7 @@ MAYBE / Millores
       return {
         //Constants
         parliamentSeats: 350,
-        closingVotingTime: new Date(2023, 6, 23, 9).toLocaleString("es-ES", {timeZone: 'Europe/Madrid'}),
+        closingVotingTime: new Date(2023, 6, 23, 9),
         //Main data
         parties: [],
         currentParliament: [],
@@ -332,7 +329,6 @@ MAYBE / Millores
         return [...this.parties].sort((a,b) => b.seats - a.seats);
       },
       resultsMode() {
-        // return true;
         return new Date() > this.closingVotingTime;
       },
       nameUnique() {
@@ -380,8 +376,8 @@ MAYBE / Millores
                   this.comments = '';
                   this.clearAllSeats();
                   this.votes.unshift(response[0]);
-                }, 2500);
-              }, 2500);
+                }, 1500);
+              }, 2000);
 
             }
           })
