@@ -9,11 +9,14 @@ MAYBE / Millores
 -Taula amb tots els resultats filtrables i tal
 -Si deixem click apretat sobré un botó que vagin pujant els clicks
 
+TO DO 23J:
+-Botó update guanyador, sense calcular-lo. Limitar el de calcular-lo fins les 22.00?
+-Fer la versió responsive amb un drawer encara més fina?
 
 <template>
-  <div class="">
+  <div class="disable-dbl-tap-zoom">
     <div class="container px-4 md:px-0 mx-auto pb-[100px] pt-10 text-lg text-slate-700">
-      <h1 class="md:h-16 text-6xl inline-block font-extrabold bg-gradient-to-r w-100 from-red-500 from-0% via-fuchsia-500 via-30% to-blue-500 to-100% text-transparent bg-clip-text">Porra eleccions generals 23J 🗳️ 🎉</h1>
+      <h1 class="md:h-16 text-6xl inline-block font-extrabold bg-gradient-to-r w-100 from-red-500 from-10% via-fuchsia-500 via-30% to-blue-500 to-90% text-transparent bg-clip-text">Porra eleccions generals 23J 🗳️ 🎉</h1>
       <p class="mt-5">
         <span class="text-lg font-bold">
           Ja hi tornem a ser, una altra festa de la democràcia!
@@ -107,18 +110,20 @@ MAYBE / Millores
         </div>
       </div>
 
-      <div class="md:h-[450px] flex flex-col-reverse md:flex-row md mt-9 gap-4">
+      <div class="h-[800px] md:h-[450px] flex flex-col-reverse md:flex-row md mt-9 gap-4">
 
         <!-- Parties -->
         <div class="flex-1 shrink flex-nowrap overflow-y-auto md:w-1/2 p-4 bg-slate-100 rounded-lg">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3">
             <div v-for="party in parties" :key="party.id" class="rounded-lg p-3 shadow shadow-slate-300" :style="{backgroundColor: party.color}">
-              <div @click="party.seats = party.seats + leftSeats" class="bg-white rounded-md p-2 cursor-default shadow-md hover:bg-opacity-80 hover:shadow-sm hover:scale-105 transition-all duration-300">
-                <div class="font-extrabold text-slate-700 truncate">{{party.name}} {{party.emoji}}</div>
-                <div class="text-sm font-light text-slate-500 truncate">{{party.candidate}}</div>
-              </div>
-              <div class="flex rounded-lg mt-3 shadow">
-                <numericInput :value="party.seats" @input="party.seats = $event" @incr="party.seats = $event" :max="parliamentSeats" :leftSeats="leftSeats" class="mx-auto my-auto"/>
+              <div class="flex flex-col gap-2">
+                <div @click="party.seats = party.seats + leftSeats" class="bg-white shrink-1 basis-4/6 truncate rounded-md p-2 cursor-default shadow-md hover:bg-opacity-80 hover:shadow-sm hover:scale-105 transition-all duration-300">
+                  <div class="font-extrabold text-slate-700 truncate">{{party.name}} {{party.emoji}}</div>
+                  <div class="text-sm font-light text-slate-500 truncate">{{party.candidate}}</div>
+                </div>
+                <div class="flex shrink-1 items-stretch">
+                  <numericInput :value="party.seats" @input="party.seats = $event" @incr="party.seats = $event" :max="parliamentSeats" :leftSeats="leftSeats" class="mx-auto my-auto"/>
+                </div>
               </div>
             </div>
           </div>
@@ -134,7 +139,7 @@ MAYBE / Millores
           </div>
           <!-- Chart -->
           <div class="flex flex-grow h-100 rounded-lg p-1 bg-slate-100">
-            <div class="my-auto p-4 flex-grow">
+            <div class="my-auto px-3 py-0 md:p-4 flex-grow">
               <div>
                 <parliamentChart :totalSeats="parliamentSeats" :parties="sortedParties"/>
               </div>
@@ -154,11 +159,16 @@ MAYBE / Millores
       <div class="flex mt-8">
         <div v-if="resultsMode" class="mx-auto text-center">
           <div>
-            Ja no es pot votar sorry. Però aquí tens un botó per si vols...
+            Ja no es pot votar sorry. Però si vols...
           </div>
-          <button @click="computeWinner" :disabled="leftSeats !== 0" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
-            RESOLDRE LA PORRA 🎉
-          </button>
+          <div class="flex gap-4 align-middle justify-center">
+            <button @click="computeWinner" :disabled="leftSeats !== 0" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
+              Actualitza guanyador
+            </button>
+            <button @click="computeWinner" :disabled="leftSeats !== 0" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
+              RESOLDRE LA PORRA 🎉
+            </button>
+          </div>
         </div>
         <div v-else class="mx-auto text-center h-10">
           <transition
@@ -468,6 +478,11 @@ MAYBE / Millores
 </script>
 
 <style>
+
+.disable-dbl-tap-zoom {
+  touch-action: manipulation;
+}
+
 @tailwind components;
 
 @layer components {
