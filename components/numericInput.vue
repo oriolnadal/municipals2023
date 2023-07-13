@@ -1,12 +1,16 @@
 <template>
-    <div class="flex flex-row h-10 w-full relative bg-transparent">
-      <!-- @touchstart="startClick('decr')" @touchend="stopClick()" -->
-      <button @click="decrement" :disabled="value === min" data-action="decrement" class="bg-white text-slate-500 disabled:pointer-events-none disabled:text-slate-100 hover:text-slate-700 hover:bg-slate-200 h-full w-20 rounded-l-md cursor-pointer outline-none">
+  <div class="flex flex-row h-10 w-full relative bg-transparent">
+    <!-- @touchstart="startClick('decr')" @touchend="stopClick()" @mousedown="startClick('decr')" @mouseup="stopClick()" -->
+      <button @click="decrement" :disabled="value === min" data-action="decrement"
+        class="bg-white text-slate-500 disabled:pointer-events-none disabled:text-slate-100 hover:text-slate-700 hover:bg-slate-200 h-full w-20 rounded-l-md cursor-pointer outline-none"
+      >
         <span class="m-auto text-2xl font-light">−</span>
       </button>
-      <input :value="value" name="custom-input-number" @change="updateValue" type="number" :min="0" :max="max" :disabled="blockIncrement && value === 0" class="appearance-none outline-none focus:outline-none text-center w-full bg-white font-semibold text-md disabled:text-slate-400 hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-slate-700 outline-none">
-      <!-- @mousedown="startClick('incr')" @mouseup="stopClick()" -->
-      <button @click="increment" :disabled="value === max || blockIncrement" data-action="increment" class="bg-white text-slate-500 disabled:pointer-events-none disabled:text-slate-100 hover:text-slate-700 hover:bg-slate-200 h-full w-20 rounded-r-md cursor-pointer">
+      <input :value="value" name="custom-input-number" @change="updateValue" type="number" :min="0" :max="max" :disabled="blockIncrement && value === 0" class="appearance-none outline-none rounded-none focus:outline-none text-center w-full bg-white font-semibold text-md disabled:text-slate-400 hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-slate-700">
+      <!-- @touchstart="startClick('incr')" @touchend="stopClick()" @mousedown="startClick('incr')" @mouseup="stopClick()" -->
+      <button @click="increment" :disabled="value === max || blockIncrement" data-action="increment"
+        class="bg-white text-slate-500 disabled:pointer-events-none disabled:text-slate-100 hover:text-slate-700 hover:bg-slate-200 h-full w-20 rounded-r-md cursor-pointer"
+      >
         <span class="m-auto text-2xl font-light">+</span>
       </button>
     </div>

@@ -5,13 +5,10 @@ MAYBE / Millores
 -Separar per components
 -Aillar bé el numericInput perquè funcioni genèric
 -Acabar dark mode
--Millorar Confetti
 -Taula amb tots els resultats filtrables i tal
--Si deixem click apretat sobré un botó que vagin pujant els clicks
 
 TO DO 23J:
--Botó update guanyador, sense calcular-lo. Limitar el de calcular-lo fins les 22.00?
--Fer la versió responsive amb un drawer encara més fina?
+-Si deixem click apretat sobré un botó que vagin pujant els clicks.
 
 <template>
   <div class="disable-dbl-tap-zoom">
@@ -113,12 +110,15 @@ TO DO 23J:
       <div class="h-[800px] md:h-[450px] flex flex-col-reverse md:flex-row md mt-9 gap-4">
 
         <!-- Parties -->
-        <div class="flex-1 shrink flex-nowrap overflow-y-auto md:w-1/2 p-4 bg-slate-100 rounded-lg">
+        <div class="flex-1 shrink flex-nowrap overflow-y-auto md:w-1/2 p-4 mt-5 md:mt-0 bg-slate-100 rounded-lg">
           <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3">
             <div v-for="party in parties" :key="party.id" class="rounded-lg p-3 shadow shadow-slate-300" :style="{backgroundColor: party.color}">
               <div class="flex flex-col gap-2">
-                <div @click="party.seats = party.seats + leftSeats" class="bg-white shrink-1 basis-4/6 truncate rounded-md p-2 cursor-default shadow-md hover:bg-opacity-80 hover:shadow-sm hover:scale-105 transition-all duration-300">
-                  <div class="font-extrabold text-slate-700 truncate">{{party.name}} {{party.emoji}}</div>
+                <div @click="party.seats = party.seats + leftSeats" class="group bg-white shrink-1 basis-4/6 truncate rounded-md p-2 cursor-default shadow-md hover:bg-opacity-80 hover:shadow-sm hover:scale-105 transition-all duration-300">
+                  <div class="flex font-extrabold text-slate-700 truncate">
+                    <div class="truncate">{{party.name}}</div>
+                    <div class="ml-2">{{party.emoji}}</div>
+                  </div>
                   <div class="text-sm font-light text-slate-500 truncate">{{party.candidate}}</div>
                 </div>
                 <div class="flex shrink-1 items-stretch">
@@ -159,16 +159,11 @@ TO DO 23J:
       <div class="flex mt-8">
         <div v-if="resultsMode" class="mx-auto text-center">
           <div>
-            Ja no es pot votar sorry. Però si vols...
+            A partir de les 22 es podrà...
           </div>
-          <div class="flex gap-4 align-middle justify-center">
-            <button @click="computeWinner" :disabled="leftSeats !== 0" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
-              Actualitza guanyador
-            </button>
-            <button @click="computeWinner" :disabled="leftSeats !== 0" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
-              RESOLDRE LA PORRA 🎉
-            </button>
-          </div>
+          <button @click="computeWinner" :disabled="leftSeats !== 0 || new Date() <= new Date(2023, 6, 23, 22)" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
+            RESOLDRE LA PORRA 🎉
+          </button>
         </div>
         <div v-else class="mx-auto text-center h-10">
           <transition
@@ -205,21 +200,27 @@ TO DO 23J:
       </div>
 
       <!-- Registered votes (gallery) -->
-      <h3 class="mt-9 title-2 gradient">Recull de vots</h3>
-      <p class="mt-2">No surten els diputats triats per cadascú per motius crec que prou clars. Dissabte sí que els podrem veure.</p>
+      <div class="mt-9 flex items-center content-center">
+        <h3 class="title-2 gradient">Recull de vots</h3>
+        <button @click="updatePoints" v-if="resultsMode" :disabled="leftSeats !== 0" class="ml-5 text-slate-500 text-base bg-slate-100 rounded-lg px-3 py-1 mr-3 disabled:bg-slate-100 disabled:scale-100  hover:bg-slate-300 hover:scale-105 transition-all">
+          <Icon name="bi:arrow-repeat"/> Rànquing
+        </button>
+      </div>
+      <p class="mt-2" v-if="!resultsMode">No surten els diputats triats per cadascú per motius crec que prou clars. Dissabte sí que els podrem veure.</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mt-7">
         <transition-group name="fade">
-          <div v-for="(vote, index) in votes" :key="vote.id" :class="vote.winner && winnerComputed? ['bg-amber-300','scale-105','winner-shake']: ['bg-slate-100']" class="group flex- flex-col p-3 shadow-md rounded-lg hover:scale-105 hover:-rotate-3 hover:shadow-lg transition-all duration-300 ease-in-out">
+          <div v-for="(vote, index) in votes" :key="vote.id" :class="vote.ranking === 1 && winnerComputed? ['bg-amber-300','scale-105','winner-shake']: ['bg-slate-100']" class="group flex- flex-col p-3 shadow-md rounded-lg hover:scale-105 hover:-rotate-3 hover:shadow-lg transition-all duration-300 ease-in-out">
             <div class="flex grow">
               <img class="flex shadow-sm rounded-full w-16 h-16 group-hover:rotate-6 group-hover:scale-110 group-hover:shadow-md transition-all duration-300 ease-in-out" :src="'https://api.dicebear.com/6.x/notionists-neutral/svg?seed='+vote.name" alt="Rounded avatar"/>
               <div class="flex flex-col grow ml-3 overflow-hidden">
                 <div class="flex mt-1 text-lg font-bold align-baseline">
+                  <div v-if="vote.ranking && vote.ranking > 0" class="mr-2 w-7 h-7 content-center justify-center rounded-full text-white bg-teal-500 shadow px-2">{{vote.ranking}}</div>
                   <div class="truncate">{{vote.name}}</div>
                   <div v-if="!winnerComputed" class="text-sm font-normal rounded-full bg-slate-300 text-slate-700 px-2 py-0.5 my-auto ml-auto">
                     {{new Date(vote.created_at).toLocaleString("ca-ES", {day: "numeric", month: "long"})}}
                   </div>
                   <div v-if="resultsMode && vote.points !== undefined && winnerComputed" class="flex-shrink-0 ml-2 text-white py-1 px-3 bg-sky-500 text-sm shadow rounded-full transition-all duration-200 ease-in-out">{{vote.points}} punts</div>
-                  <div v-if="vote.winner && winnerComputed" class="absolute -top-4 -right-3 text-7xl rotate-6 transition-all duration-200 ease-in-out winner-shake">🏆</div>
+                  <div v-if="vote.ranking === 1 && winnerComputed" class="absolute -top-4 -right-3 text-7xl rotate-6 transition-all duration-200 ease-in-out winner-shake">🏆</div>
                 </div>
                 <div class="mt-2 wrap text-sm">{{vote.comments}}</div>
               </div>
@@ -232,7 +233,7 @@ TO DO 23J:
                       <div class="py-1 px-2 border-2 border-white bg-opacity-75 shrink-0 mr-1 text-center font-bold shadow bg-white rounded-md">
                         {{vote[party.short_name]}}
                       </div>
-                      <div class="py-1 px-2 grow text-sm my-auto truncate border-2 border-white bg-opacity-75 bg-white rounded-md">
+                      <div class="py-1 px-2 grow align-items-center items-center text-sm truncate border-2 border-white bg-opacity-75 bg-white rounded-md">
                         {{party.name}}
                       </div>
                     </div>
@@ -246,13 +247,32 @@ TO DO 23J:
       <div v-if="votes.length === 0" class="bg-slate-100 text-slate-500 font-semibold flex grow p-4 rounded-lg">
         Encara no ha votat ningú 🫠
       </div>
+
+      <!-- Votes Table -->
+      <h3 v-if="resultsMode" class="title-2 mt-20 gradient">Taula resum</h3>
+      <div v-if="resultsMode" class="text-sm mt-5 shadow">
+        <DataTable :value="votes" tableStyle="min-width: 50rem" class="p-datatable-small" scrollable removableSort scrollHeight="800px">
+          <Column field="photo" header="" frozen>
+            <template #body="slotProps">
+              <div class="flex align-middle w-12">
+                <img class="flex border rounded-full w-12 h-12" :src="'https://api.dicebear.com/6.x/notionists-neutral/svg?seed='+slotProps.data.name" alt="Rounded avatar"/>
+              </div>
+            </template>
+          </Column>
+          <Column field="name" header="Nom" frozen sortable><template #body="slotProps">{{ slotProps.data.name }}</template></Column>
+          <Column field="ranking" header="#" sortable></Column>
+          <Column field="points" header="Punts" sortable></Column>
+          <Column v-for="party in parties" :key="party.short_name" :field="party.short_name" :header="party.short_name" sortable></Column>
+        </DataTable>
+      </div>
+
     </div>
+
     <div class="text-sm flex flex-col py-1 md:flex-row content-center justify-center text-center text-slate-500 bg-slate-200">
-        <div class="my-auto">
-          Fet amb il·lusió i qui sap si en horari laboral per
-        </div>
-        <a class="flex self-center bg-slate-300 rounded-lg m-1 px-2" href="https://twitter.com/OriolNadal_">aquesta persona</a>
-      <!-- </div> -->
+      <div class="my-auto">
+        Fet amb il·lusió i qui sap si en horari laboral per
+      </div>
+      <a class="flex self-center bg-slate-300 rounded-lg m-1 px-2" href="https://twitter.com/OriolNadal_">aquesta persona</a>
     </div>
   </div>
 </template>
@@ -398,9 +418,8 @@ TO DO 23J:
 
       },
 
-      computeWinner() {
-
-        //Compute MSE for each party
+      updatePoints() {
+        //Compute MSE for each participant
         let partyNames = this.parties.map(party => party.short_name);
         let resultsVotesVector = this.parties.map(party=>party.seats);
         this.votes.forEach((participant,index) => {
@@ -409,13 +428,23 @@ TO DO 23J:
           participant['points'] = points;
         })
 
-        //Ordrer parties and pick winners
+        //Ordrer participants and set rank positions
         this.votes.sort((a,b) => a.points - b.points);
-        const winningPoints = this.votes[0].points;
-        for (const vote of this.votes) {
-          vote.winner = vote.points === winningPoints;
+        let rank = 1;
+        let previousPoints = this.votes[0].points;
+        this.votes[0].ranking = rank;
+
+        for (let i = 1; i < this.votes.length; i++) {
+          if (this.votes[i].points > previousPoints) {
+            rank++;
+          }
+          this.votes[i].ranking = rank;
+          previousPoints = this.votes[i].points;
         }
-        
+      },
+
+      computeWinner() {
+        this.updatePoints();
         setTimeout(() => {
           this.winnerComputed = true;
           this.$confetti.start();
@@ -485,6 +514,12 @@ TO DO 23J:
 
 @tailwind components;
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @layer components {
   .title-2 {
     @apply text-3xl font-bold inline-block text-transparent bg-clip-text;
@@ -551,6 +586,9 @@ TO DO 23J:
   50% { transform: rotate(0eg); }
   75% { transform: rotate(-2deg); }
   100% { transform: rotate(0deg); }
+}
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.5rem 0.5rem !important;
 }
 
 </style>
