@@ -132,10 +132,10 @@ TO DO 23J:
         <!-- Chart zone-->
         <div class="flex flex-col w-100 md:w-1/2">
           <!-- Toolbar -->
-          <div class="flex flex-row md:flex-auto mb-3 h-1">
-            <button @click="setCurrentSeats" class="md:grow text-base h-12 bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:rainbow" class="mr-2"/>Resultats 2019</button>
-            <button @click="shuffleSeats" class="md:grow text-base h-12 bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:shuffle" class="mr-2"/>Aleatori</button>
-            <button @click="clearAllSeats" class="md:grow text-base h-12 bg-slate-100 rounded-lg px-3 py-1 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:trash" class="mr-2"/>Neteja</button>
+          <div class="flex flex-row md:flex-auto mb-3 md:h-1">
+            <button @click="setCurrentSeats" class="md:grow text-base md:h-10 bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:rainbow" class="mr-2"/>Resultats 2019</button>
+            <button @click="shuffleSeats" class="md:grow text-base md:h-10 bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:shuffle" class="mr-2"/>Aleatori</button>
+            <button @click="clearAllSeats" class="md:grow text-base md:h-10 bg-slate-100 rounded-lg px-3 py-1 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:trash" class="mr-2"/>Neteja</button>
           </div>
           <!-- Chart -->
           <div class="flex flex-grow h-100 rounded-lg p-1 bg-slate-100">
