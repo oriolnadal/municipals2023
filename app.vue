@@ -107,7 +107,7 @@ TO DO 23J:
         </div>
       </div>
 
-      <div class="h-[800px] md:h-[450px] flex flex-col-reverse md:flex-row md mt-9 gap-4">
+      <div class="h-[800px] md:h-[490px] flex flex-col-reverse md:flex-row md mt-9 gap-4">
 
         <!-- Parties -->
         <div class="flex-1 shrink flex-nowrap overflow-y-auto md:w-1/2 p-4 mt-5 md:mt-0 bg-slate-100 rounded-lg">
@@ -132,10 +132,10 @@ TO DO 23J:
         <!-- Chart zone-->
         <div class="flex flex-col w-100 md:w-1/2">
           <!-- Toolbar -->
-          <div class="flex flex-row md:flex-auto mb-3">
-            <button @click="setCurrentSeats" class="md:grow text-base bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:rainbow" class="mr-2"/>Resultats 2019</button>
-            <button @click="shuffleSeats" class="md:grow text-base bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:shuffle" class="mr-2"/>Aleatori</button>
-            <button @click="clearAllSeats" class="md:grow text-base bg-slate-100 rounded-lg px-3 py-1 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:trash" class="mr-2"/>Neteja</button>
+          <div class="flex flex-row md:flex-auto mb-3 h-1">
+            <button @click="setCurrentSeats" class="md:grow text-base h-12 bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:rainbow" class="mr-2"/>Resultats 2019</button>
+            <button @click="shuffleSeats" class="md:grow text-base h-12 bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:shuffle" class="mr-2"/>Aleatori</button>
+            <button @click="clearAllSeats" class="md:grow text-base h-12 bg-slate-100 rounded-lg px-3 py-1 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:trash" class="mr-2"/>Neteja</button>
           </div>
           <!-- Chart -->
           <div class="flex flex-grow h-100 rounded-lg p-1 bg-slate-100">
@@ -216,7 +216,7 @@ TO DO 23J:
                 <div class="flex mt-1 text-lg font-bold align-baseline">
                   <div v-if="vote.ranking && vote.ranking > 0" class="mr-2 w-7 h-7 content-center justify-center rounded-full text-white bg-teal-500 shadow px-2">{{vote.ranking}}</div>
                   <div class="truncate">{{vote.name}}</div>
-                  <div v-if="!winnerComputed" class="text-sm font-normal rounded-full bg-slate-300 text-slate-700 px-2 py-0.5 my-auto ml-auto">
+                  <div v-if="!winnerComputed" class="text-sm flex-nowrap shrink-0 font-normal rounded-full bg-slate-300 text-slate-700 px-2 py-0.5 my-auto ml-auto">
                     {{new Date(vote.created_at).toLocaleString("ca-ES", {day: "numeric", month: "long"})}}
                   </div>
                   <div v-if="resultsMode && vote.points !== undefined && winnerComputed" class="flex-shrink-0 ml-2 text-white py-1 px-3 bg-sky-500 text-sm shadow rounded-full transition-all duration-200 ease-in-out">{{vote.points}} punts</div>
@@ -493,7 +493,7 @@ TO DO 23J:
 
     },
     async created() {
-      console.log("Hola hackers! xd He fet la web amb Nuxt3 (sense TS), maquetat amb Tailwind i amb Supabase per les dades. Allotjat a Vercel. Ja podeu començar a objectar, però a cada conovocatòria diferent aniré canviant de stack per practicar hehe. Hi ha errors de seguretat detectats ja, us aviso. Com que no faig check de dades al servidor perquè em feia pal. Vull dir, que si voteu via APi es menja algunes coses que no toquen. Altres no... Però nse xd");
+      console.log("Hola hackers! xd He fet la web amb Nuxt3 (sense TS), maquetat amb Tailwind i amb Supabase per les dades. Allotjat a Vercel. Ja podeu començar a objectar, però a cada conovocatòria diferent aniré canviant d'stack per practicar hehe. Hi ha errors de seguretat detectats ja, us aviso. Com que no faig check de dades al servidor perquè em feia pal. Vull dir, que si voteu via APi es menja algunes coses que no toquen. Altres no... Però nse xd");
       await this.fetchData();
     },
     mounted() {
