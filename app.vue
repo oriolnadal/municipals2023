@@ -28,7 +28,7 @@ TO DO 23J:
         </span>
       </p>
 
-      <h3 class="title-2 gradient mt-9">Ni electoral</h3>
+      <h3 class="title-2 gradient mt-9">Nit electoral</h3>
       <p class="mt-4">
         Compteu també que en fem.
         En ppi a ca nostra, però confirmem detalls per Telegram.
