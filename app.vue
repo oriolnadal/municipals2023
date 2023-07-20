@@ -272,7 +272,7 @@ TO DO 23J:
       <div class="my-auto">
         Fet amb il·lusió i qui sap si en horari laboral per
       </div>
-      <a class="flex self-center bg-slate-300 rounded-lg m-1 px-2" href="https://twitter.com/OriolNadal_">aquesta persona</a>
+      <a class="flex self-center bg-slate-300 rounded-lg m-1 px-2" href="https://twitter.com/OriolNadal_" target="_blank">aquesta persona</a>
     </div>
   </div>
 </template>
