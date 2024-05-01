@@ -73,7 +73,6 @@ export default {
                         callbacks: {
                             // title: (data) => {
                             //     let tooltipItem = data[0];
-                            //     console.log(data);
                             //     return tooltipItem.label + ', ' +  tooltipItem.parsed;
                             // },
                             labelPointStyle: () => {

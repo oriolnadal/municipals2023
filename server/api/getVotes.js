@@ -1,14 +1,16 @@
 import { serverSupabaseClient } from '#supabase/server'
+import config from '../../config.json'
+
 
 export default defineEventHandler(async (event) => {
   process.env.TZ = 'Europe/Madrid';
   const client = serverSupabaseClient(event)
-  const { data, error } = await client.from('votes_23j').select('*').order('created_at', {ascending: false});
+  const { data, error } = await client.from(config.votes_table_name).select('*').order('created_at', {ascending: false});
   if (error) {
     throw createError({ statusMessage: error.message })
   }
-  if(new Date() > new Date(2023, 6, 23, 9)) {
-  // if(true) {
+  const closingDate = new Date(config.closing_voting_time);
+  if(new Date() > closingDate) {
     return data;
   }else {
     let publicVotingData = data.map(vote => {

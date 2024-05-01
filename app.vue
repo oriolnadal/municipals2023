@@ -6,6 +6,9 @@ MAYBE / Millores
 -Aillar bé el numericInput perquè funcioni genèric
 -Acabar dark mode
 -Taula amb tots els resultats filtrables i tal
+-Copies dinàmiques
+-"Resultats 2021" copy dinàmica
+-Pestanya de eleccions passades?
 
 TO DO 23J:
 -Si deixem click apretat sobré un botó que vagin pujant els clicks.
@@ -13,27 +16,22 @@ TO DO 23J:
 <template>
   <div class="disable-dbl-tap-zoom">
     <div class="container px-4 md:px-0 mx-auto pb-[100px] pt-10 text-lg text-slate-700">
-      <h1 class="md:h-16 text-6xl inline-block font-extrabold bg-gradient-to-r w-100 from-red-500 from-10% via-fuchsia-500 via-30% to-blue-500 to-90% text-transparent bg-clip-text">Porra eleccions generals 23J 🗳️ 🎉</h1>
+      <h1 class="text-4xl md:text-6xl inline-block font-extrabold bg-gradient-to-r w-100 from-blue-500 from-10% via-red-500 via-30% to-yellow-500 to-90% text-transparent bg-clip-text">
+        Porra Eleccions al Parlament de Catalunya 12M 🗳️ 🎉
+    </h1>
       <p class="mt-5">
         <span class="text-lg font-bold">
-          Ja hi tornem a ser, una altra festa de la democràcia!
+          Perquè la poletologea no se ace sola, anià k fer-la, visca!
         </span>
         <br>
-        <span>
-         Aquest cop en ple juliol, gràcies a que, com diu la dita: <i>"Más sabe el perrosanxe por perro que por sanxe".</i>
-        </span>
-        <br>
-        <span>
-          Però per sort si hi ha eleccions vol dir que tornem a tenir... porra!
-        </span>
       </p>
 
       <h3 class="title-2 gradient mt-9">Nit electoral</h3>
       <p class="mt-4">
         Compteu també que en fem.
-        En ppi a ca nostra, però confirmem detalls per Telegram.
+        En ppi a ca nostra a l'Eixample, però confirmem detalls per Telegram.
         Susceptible de canviar o anul·lar-se si plou o si passen coses.
-        Inici 19.30h i a les 23h tothom fora de casa que si no els veïns tal.
+        Inici 19.30h i a les 23h dw.
       </p>
 
       <!-- How it works -->
@@ -42,19 +40,19 @@ TO DO 23J:
         <li class="py-2 flex">
           <Icon class="w-24 my-auto mr-4" size="1.75rem" name="⏱️"/>
           <div>
-            Es pot votar fins les 9.00 h del diumenge 23 de juliol.
+            Es pot votar fins les 23.00 h del dissabte 11 de maig. No hi haurà excepcions.
           </div>
         </li>
         <li class="py-2 flex">
           <Icon class="w-24 my-auto mr-4" size="1.75rem" name="💸"/>
           <div>
-            Bizum de 3€ a l'Oriol. Concepte:<i class="text-base font-medium"> porra23j - [nom/pseudònim]</i>. Si no arriba a temps el vot s'esborra, que si no post resultats ningú pagarà.
+            Bizum de 3€ a l'Oriol. Concepte:<i class="text-base font-medium"> porra12m - [nom]</i>. Si no arriba a temps el vot s'esborra. <a class="text-sky-400 underline" href="https://www.youtube.com/watch?v=NGKUWjeZylI" target="_blank">Aquest cop sí.</a>
           </div>
         </li>
         <li class="py-2 flex">
           <Icon class="w-24 my-auto mr-4" size="1.75rem" name="🔁"/>
           <div>
-            De fet, si algú vol jugar N cops pagant N cops per mi també endavant.
+            De fet, si algú vol jugar N cops pagant N vegades per mi també endavant.
           </div>
         </li>
         <li class="py-2 flex">
@@ -86,7 +84,7 @@ TO DO 23J:
       <div class="mt-5">
         <label for="price" class="block font-medium leading-6 text-gray-900">Nom</label>
         <p class="text-xs text-slate-500 mt-2">
-          Escriu el teu nom. Sortirà públic a la llista de vots. Si poses un pseudònim perd gràcia. En tot cas ha de ser el mateix nom que posis al concepte del Bizum. Si vols votar dos cops, posa un número o etc.
+          Escriu el teu nom. Sortirà públic a la llista de vots. Ha de ser el mateix nom que posis al concepte del Bizum. Si vols votar dos cops, posa un número o etc.
         </p>
         <div class="relative mt-2 rounded-lg">
           <input v-model="name" type="text" name="price" id="price" class="block w-full md:w-64 rounded-lg py-1.5 pl-3 pr-20 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6" placeholder="Nom...">
@@ -100,8 +98,8 @@ TO DO 23J:
           Pots matisar, sumar, restar o el que sigui. Sortirà públic a la llista de vots.
         </p>
         <div class="flex mt-2 rounded-lg">
-          <div class="relative">
-            <textarea v-model="comments" placeholder="Comentaris..." maxlength="250" cols="70" rows="4" style="max-width:90vw" class="resize-none rounded-lg py-1.5 pl-3 pr-3 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6"></textarea>
+          <div class="flex w-full relative lg:max-w-2xl">
+            <textarea v-model="comments" placeholder="Comentaris..." maxlength="250" rows="4" class="w-full resize-none rounded-lg py-1.5 pl-3 pr-3 border-2 border-slate-300 outline-0 focus:border-sky-500 focus:ring-0 focus:ring-offset-0 sm:text-sm sm:leading-6"></textarea>
             <div class="absolute text-slate-500 text-sm bg-white p-1 rounded bottom-3 right-1">{{ comments.length }} / 250</div>
           </div>
         </div>
@@ -114,7 +112,7 @@ TO DO 23J:
           <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3">
             <div v-for="party in parties" :key="party.id" class="rounded-lg p-3 shadow shadow-slate-300" :style="{backgroundColor: party.color}">
               <div class="flex flex-col gap-2">
-                <div @click="party.seats = party.seats + leftSeats" class="group bg-white shrink-1 basis-4/6 truncate rounded-md p-2 cursor-default shadow-md hover:bg-opacity-80 hover:shadow-sm hover:scale-105 transition-all duration-300">
+                <div @click="party.seats = party.seats + leftSeats" class="group bg-white shrink-1 basis-4/6 truncate rounded-md p-2 cursor-pointer shadow-md hover:bg-opacity-80 hover:shadow-sm hover:scale-105 transition-all duration-300">
                   <div class="flex font-extrabold text-slate-700 truncate">
                     <div class="truncate">{{party.name}}</div>
                     <div class="ml-2">{{party.emoji}}</div>
@@ -133,7 +131,7 @@ TO DO 23J:
         <div class="flex flex-col w-100 md:w-1/2">
           <!-- Toolbar -->
           <div class="flex flex-row md:flex-auto mb-3 md:h-1">
-            <button @click="setCurrentSeats" class="md:grow text-base md:h-10 bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:rainbow" class="mr-2"/>Resultats 2019</button>
+            <button @click="setCurrentSeats" class="md:grow text-base md:h-10 bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:rainbow" class="mr-2"/>Resultats 2021</button>
             <button @click="shuffleSeats" class="md:grow text-base md:h-10 bg-slate-100 rounded-lg px-3 py-1 mr-3 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:shuffle" class="mr-2"/>Aleatori</button>
             <button @click="clearAllSeats" class="md:grow text-base md:h-10 bg-slate-100 rounded-lg px-3 py-1 hover:bg-slate-300 hover:scale-105 transition-all"><Icon name="bi:trash" class="mr-2"/>Neteja</button>
           </div>
@@ -146,8 +144,8 @@ TO DO 23J:
               <div class="flex">
                 <div class="flex mx-auto">
                   <div class="p-2 font-bold text-slate-500">{{parliamentSeats-leftSeats}} <span class="text-slate-300">/ {{parliamentSeats}}</span></div>
-                  <div v-if="leftSeats === 0" class="p-2 font-bold text-slate-300">Congrés ple</div>
-                  <div v-else class="p-2 font-bold text-slate-300">Et falten deputados...</div>
+                  <div v-if="leftSeats === 0" class="p-2 font-bold text-slate-300">Parlament ple</div>
+                  <div v-else class="p-2 font-bold text-slate-300">Et falten cadires...</div>
                 </div>
               </div>
             </div>       
@@ -161,7 +159,7 @@ TO DO 23J:
           <div>
             A partir de les 22 es podrà...
           </div>
-          <button @click="computeWinner" :disabled="leftSeats !== 0 || new Date() <= new Date(2023, 6, 23, 22)" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
+          <button @click="computeWinner" :disabled="leftSeats !== 0 || new Date() <= resultResolutionTime" class="mx-auto mt-4 py-2 px-4 text-white bg-sky-500 font-semibold rounded-lg disabled:bg-slate-300 disabled:hover:scale-100 hover:scale-110 hover:bg-lime-600 hover:shadow duration-300 transition-all">
             RESOLDRE LA PORRA 🎉
           </button>
         </div>
@@ -201,12 +199,12 @@ TO DO 23J:
 
       <!-- Registered votes (gallery) -->
       <div class="mt-9 flex items-center content-center">
-        <h3 class="title-2 gradient">Recull de vots</h3>
+        <h3 class="title-2 gradient">Recull d'apostes</h3>
         <button @click="updatePoints" v-if="resultsMode" :disabled="leftSeats !== 0" class="ml-5 text-slate-500 text-base bg-slate-100 rounded-lg px-3 py-1 mr-3 disabled:bg-slate-100 disabled:scale-100  hover:bg-slate-300 hover:scale-105 transition-all">
           <Icon name="bi:arrow-repeat"/> Rànquing
         </button>
       </div>
-      <p class="mt-2" v-if="!resultsMode">No surten els diputats triats per cadascú per motius crec que prou clars. Dissabte sí que els podrem veure.</p>
+      <p class="mt-2" v-if="!resultsMode">No surt l'aposta de cadascú per motius crec que prou clars. Diumenge sí que els podrem veure.</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mt-7">
         <transition-group name="fade">
           <div v-for="(vote, index) in votes" :key="vote.id" :class="vote.ranking === 1 && winnerComputed? ['bg-amber-300','scale-105','winner-shake']: ['bg-slate-100']" class="group flex- flex-col p-3 shadow-md rounded-lg hover:scale-105 hover:-rotate-3 hover:shadow-lg transition-all duration-300 ease-in-out">
@@ -245,7 +243,7 @@ TO DO 23J:
         </transition-group>
       </div>
       <div v-if="votes.length === 0" class="bg-slate-100 text-slate-500 font-semibold flex grow p-4 rounded-lg">
-        Encara no ha votat ningú 🫠
+        Encara no ha participat ningú 🫠
       </div>
 
       <!-- Votes Table -->
@@ -270,7 +268,7 @@ TO DO 23J:
 
     <div class="text-sm flex flex-col py-1 md:flex-row content-center justify-center text-center text-slate-500 bg-slate-200">
       <div class="my-auto">
-        Fet amb il·lusió i qui sap si en horari laboral per
+        Fet amb il·lusió per
       </div>
       <a class="flex self-center bg-slate-300 rounded-lg m-1 px-2" href="https://twitter.com/OriolNadal_" target="_blank">aquesta persona</a>
     </div>
@@ -278,10 +276,10 @@ TO DO 23J:
 </template>
 
 <script>
-  // import { loadFull } from 'tsparticles';
-  import { toRaw } from 'vue';
   import numericInput from '/components/numericInput.vue';
   import parliamentChart from '/components/parliamentChart.vue';
+  import config from './config.json'
+
   export default {
 
     components: {
@@ -291,8 +289,9 @@ TO DO 23J:
     data() {
       return {
         //Constants
-        parliamentSeats: 350,
-        closingVotingTime: new Date(2023, 6, 23, 9),
+        parliamentSeats: config.total_seats,
+        closingVotingTime: null,
+        resultResolutionTime: null,
         //Main data
         parties: [],
         currentParliament: [],
@@ -304,6 +303,7 @@ TO DO 23J:
         sendingVote: false,
         voteSucceed: false,
         winnerComputed: false,
+
         options: {
           background: {
             color: "#fff", // this sets a background color for the canvas
@@ -391,7 +391,6 @@ TO DO 23J:
           this.parties.forEach((p) => {
            vote[p.short_name] = p.seats;
           });
-          console.log("vote", vote);
           $fetch('/api/vote', { method: 'post', body: vote })
           .then(response => {
             if(response.code) {
@@ -463,7 +462,6 @@ TO DO 23J:
       },
 
       setCurrentSeats() {
-        console.log(this.currentParliament);
         this.parties = JSON.parse(JSON.stringify(this.currentParliament));
       },
 
@@ -494,6 +492,8 @@ TO DO 23J:
     },
     async created() {
       console.log("Hola hackers! xd He fet la web amb Nuxt3 (sense TS), maquetat amb Tailwind i amb Supabase per les dades. Allotjat a Vercel. Ja podeu començar a objectar, però a cada conovocatòria diferent aniré canviant d'stack per practicar hehe. Hi ha errors de seguretat detectats ja, us aviso. Com que no faig check de dades al servidor perquè em feia pal. Vull dir, que si voteu via APi es menja algunes coses que no toquen. Altres no... Però nse xd");
+      this.closingVotingTime = new Date(config.closing_voting_time)
+      this.resultResolutionTime = new Date(config.elections_day+'T22:00:00')
       await this.fetchData();
     },
     mounted() {
@@ -591,4 +591,5 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 0.5rem 0.5rem !important;
 }
 
-</style>
+</style>import { exitCode } from 'process';
+

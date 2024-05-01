@@ -58,16 +58,12 @@
       updateValue(e) {
         const currValue = this.value;
         const newValue = parseInt(e.target.value);
-        // console.log("curr:",currValue," New:", newValue, " Left seats:",this.leftSeats);
         if (!isNaN(newValue)) {
           if(newValue <= currValue + this.leftSeats && newValue >= 0) { //Correct value
-            // console.log("1");
             this.$emit('input', newValue);
           }else if(newValue < 0) { //Negative
-            // console.log("2");
             this.$emit('input', 0);
           }else { //Fill all the remaining seats
-            // console.log("3");
             this.$emit('input', currValue + this.leftSeats);
           }
 
